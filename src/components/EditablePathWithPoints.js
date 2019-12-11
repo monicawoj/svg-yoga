@@ -105,8 +105,8 @@ const EditablePathWithPoints = ({ data, scaleX, scaleY }) => {
   return (
     <div className="container">
       <div className="visual">
-        <svg width={"480px"} height={"600px"}>
-          <g transform="translate(100)">
+        <svg width={"480px"} height={"300px"}>
+          <g transform="translate(60)">
             <path fill="none" stroke="black" d={pathData} />
             {arePointsVisible ? getPoints(pathData) : null}
           </g>
@@ -116,7 +116,7 @@ const EditablePathWithPoints = ({ data, scaleX, scaleY }) => {
         <button className="button" onClick={() => setPointsVisibility(!arePointsVisible)}>
           {arePointsVisible ? "hide points" : "show points"}
         </button>
-        <textarea class="textarea" rows={10} value={pathData} onChange={e => setPathData(e.target.value)} placeholder="enter path data :)"></textarea>
+        <textarea className="textarea" rows={10} value={pathData} onChange={e => setPathData(e.target.value)} placeholder="enter path data :)"></textarea>
       </div>
     </div>
   );
