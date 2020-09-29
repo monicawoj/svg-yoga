@@ -1,3 +1,22 @@
+# SVG Path Shaper
+
+You're go-to tool for exploring and modifying SVG path data. Enjoy!
+
+## Using this tool, you can:
+- explore / learn about SVG paths
+- tweak: by directly changing path data
+- tweak: by click-and-drag of the visualized path
+- save: quickly copy your tweaked path data 
+- use: as a stroke, as a crop-path, as an animation path, etc.
+- preview transform animations from original path to the tweaked version
+
+## This is a currently in MVP phase
+Some enhancements for the future include:
+- handle input of multiple paths
+- resize the path data to the size of the canvas (instead of 'scale' up and down buttons)
+
+-----------------------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

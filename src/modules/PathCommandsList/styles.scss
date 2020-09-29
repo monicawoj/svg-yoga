@@ -1,0 +1,11 @@
+@import 'App.scss';
+
+.list {
+    height: 100%;
+    overflow: scroll;
+}
+
+.is-selected {
+    background-color: $orange !important;
+    color: white;
+}

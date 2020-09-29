@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { SVGPathData, encodeSVGPath } from "svg-pathdata";
 import Draggable from "react-draggable";
-import { getReferencePathData } from './utils';
+import { getScaledPathData } from 'utils';
 
 import "./styles.scss";
 
@@ -19,9 +19,33 @@ import "./styles.scss";
 // as the user drags, need to update the path command that created this point with the new X and Y values
 // whenever the data updates, need to rerender (hold data in state)
 
-const EditablePathWithPoints = ({ data, scaleX, scaleY }) => {
-  const [pathData, setPathData] = useState(getReferencePathData(data, scaleX, scaleY));
+const EditablePathWithPoints = ({ data, dimensions }) => {
+  const [pathData, setPathData] = useState(data);
+  const [pathBoundingBox, setPathBoundingBox] = useState({});
+  const [viewBox, setViewBox] = useState(`0 0 100 100`);
   const [arePointsVisible, setPointsVisibility] = useState(false);
+  const pathRef = useRef(null);
+
+  useEffect(() => {
+    if (pathBoundingBox.x) {
+//  setPathData(
+//    new SVGPathData(pathData)
+//      .toAbs()
+//      .translate(-pathBoundingBox.x, -pathBoundingBox.y)
+//      .encode()
+//  );
+    }
+  }, [pathBoundingBox.x, pathBoundingBox.y, pathData]);
+
+  useEffect(() => {
+    if (pathRef.current) {
+      const pathBoundingBox = pathRef.current.getBBox();
+      setPathBoundingBox(pathBoundingBox);
+      // setViewBox(`${x} ${y} ${width} ${height}`);
+      // console.log(dimensions.width, dimensions.height, pathRef.current.getBBox());
+      // const newScales = { x: boundingBox.width / , y };
+    }
+  }, [dimensions, pathRef])
 
   const getPoints = pathData => {
     const pathCommands = new SVGPathData(pathData).toAbs().commands;
@@ -92,7 +116,7 @@ const EditablePathWithPoints = ({ data, scaleX, scaleY }) => {
             fill="blue"
             stroke="black"
             opacity="0.5"
-            r={5}
+            r={2}
             cx={getXValue(x)}
             cy={getYValue(y)}
           />
@@ -103,11 +127,11 @@ const EditablePathWithPoints = ({ data, scaleX, scaleY }) => {
   };
 
   return (
-    <div className="container">
-      <div className="visual">
-        <svg width={"480px"} height={"300px"}>
-          <g transform="translate(60)">
-            <path fill="none" stroke="black" d={pathData} />
+    <>
+      <div>
+        <svg viewBox={viewBox} preserveAspectRatio='xMidYMid meet' width={dimensions.width} height={dimensions.height}>
+          <g>
+            <path ref={pathRef} fill="none" stroke="black" d={pathData} />
             {arePointsVisible ? getPoints(pathData) : null}
           </g>
         </svg>
@@ -118,7 +142,7 @@ const EditablePathWithPoints = ({ data, scaleX, scaleY }) => {
         </button>
         <textarea className="textarea" rows={10} value={pathData} onChange={e => setPathData(e.target.value)} placeholder="enter path data :)"></textarea>
       </div>
-    </div>
+    </>
   );
 };
 

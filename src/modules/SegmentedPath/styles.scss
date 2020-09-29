@@ -1,0 +1,21 @@
+@import 'App.scss';
+
+.path-segment {
+  &:hover {
+    stroke: $mandarin;
+  }
+  &.is-selected {
+    stroke: $orange;
+  }
+}
+
+.board-item-content {
+   &:hover {
+    background-color: $mandarin;
+    color: white;
+  }
+  &.is-selected {
+    background-color: $orange;
+    color: white;
+  }
+}

@@ -4,18 +4,21 @@
 @import url("https://fonts.googleapis.com/css?family=Nunito:400,700");
 
 // Set your brand colors
-$purple: #8a4d76;
-$pink: #fa7c91;
-$brown: #757763;
+$dark: #264653;
+$turquise: #2a9d8f;
+$mustard: #e9c46a;
+$mandarin: #f4a261;
+$orange: #e76f51;
 $beige-light: #d0d1cd;
 $beige-lighter: #eff0eb;
 
 // Update Bulma's global variables
 $family-sans-serif: "Nunito", sans-serif;
-$grey-dark: $brown;
+$grey-dark: $turquise;
 $grey-light: $beige-light;
-$primary: $purple;
-$link: $pink;
+$primary: $dark;
+$secondary: $turquise;
+$link: $turquise;
 $widescreen-enabled: false;
 $fullhd-enabled: false;
 
@@ -25,27 +28,78 @@ $control-border-width: 2px;
 $input-border-color: transparent;
 $input-shadow: none;
 
-@import "../node_modules/bulma/bulma.sass";
-
-.App {
-  background-image: url(./images/white-paper-background.jpg);
-  background-position: center top;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100vh;
+.card {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  width: 100%;
+}
+.content-wrapper {
+  margin-top: 3rem;
+}
+.card-footer-item {
+  font-size: 12px;
+  font-weight: normal;
+}
+.card-header-title {
+  display: block;
+}
+.card-content p {
+  margin-bottom: 2rem;
+}
+.container {
+  max-width: 95%;
+}
+.fa-code,
+.fa-search {
+  margin-right: 0.5vw;
 }
 
-.title {
-  color: white;
+#sectioncontainer {
+  margin-top: 20px;
+}
+
+/* Keep from sticking to sides */
+.cards-container {
+  max-width: 95%;
+}
+
+.board-item {
+  margin: 5px 0;
+  will-change: transform;
+}
+
+.board-item-content {
+  word-break: break-all;
+  position: relative;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+  font-size: 17px;
   text-align: center;
-  width: 100%;
-  font-size: 4em;
+  cursor: pointer;
+  -webkit-box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 1px 3px 0 rgba(0, 0, 0, 0.2);
+  margin: 5px;
 }
 
-.header {
-  width: 100%;
-  height: 11em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.delete {
+  pointer-events: auto;
 }
+
+footer {
+  margin-top: 2rem;
+}
+
+.vertical-container {
+  height: 700px;
+}
+
+.column {
+  &.flex-end {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+}
+
+@import "../node_modules/bulma/bulma.sass";

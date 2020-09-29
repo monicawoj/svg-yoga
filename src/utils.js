@@ -1,9 +1,72 @@
-import { SVGPathData, encodeSVGPath } from "svg-pathdata";
+import { SVGPathData, encodeSVGPath, SVGPathDataTransformer } from "svg-pathdata";
 
-export const getReferencePathData = (d, scaleX, scaleY) => new SVGPathData(d)
+export const getScaledPathData = (d, scale = 1) => new SVGPathData(d)
     .toAbs()
-    .scale(scaleX, scaleY)
+    .scale(scale, scale)
     .encode();
+
+export const pathCommandTypes = {
+  CLOSE_PATH: "CLOSE_PATH",
+  MOVE_TO: "MOVE_TO",
+  HORIZ_LINE_TO: "HORIZ_LINE_TO",
+  VERT_LINE_TO: "VERT_LINE_TO",
+  LINE_TO: "LINE_TO",
+  CURVE_TO: "CURVE_TO",
+  SMOOTH_CURVE_TO: "SMOOTH_CURVE_TO",
+  QUAD_TO: "QUAD_TO",
+  SMOOTH_QUAD_TO: "SMOOTH_QUAD_TO",
+  ARC: "ARC",
+};
+
+const {
+  CLOSE_PATH,
+  MOVE_TO,
+  HORIZ_LINE_TO,
+  VERT_LINE_TO,
+  LINE_TO,
+  CURVE_TO,
+  SMOOTH_CURVE_TO,
+  QUAD_TO,
+  SMOOTH_QUAD_TO,
+  ARC,
+} = pathCommandTypes;
+
+export const getPathCommandType = (number) => {
+  switch (number) {
+    case 1:
+      return CLOSE_PATH;
+    case 2:
+      return MOVE_TO;
+    case 4:
+      return HORIZ_LINE_TO;
+    case 8:
+      return VERT_LINE_TO;
+    case 16:
+      return LINE_TO;
+    case 32:
+      return CURVE_TO;
+    case 64:
+      return SMOOTH_CURVE_TO;
+    case 128:
+      return QUAD_TO;
+    case 256:
+      return SMOOTH_QUAD_TO;
+    case 512:
+      return ARC;
+    default:
+      console.log(number);
+      throw new Error("the given path command type is not recognized");
+  }
+};
+
+export const getPathCommands = pathData =>
+    new SVGPathData(pathData).toAbs().transform(SVGPathDataTransformer.ROUND(4)).commands;
+
+export const getEncodedPathCommands = (pathData) =>
+  new SVGPathData(pathData)
+    .toAbs()
+    .transform(SVGPathDataTransformer.ROUND(4))
+    .commands.map((command) => encodeSVGPath(command));
 
 export const getFromBetween = {
     results: [],
@@ -45,3 +108,4 @@ export const getFromBetween = {
         return this.results;
     }
 };
+

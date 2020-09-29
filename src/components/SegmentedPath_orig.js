@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { SVGPathData, encodeSVGPath } from "svg-pathdata";
 import { scaleLinear } from "d3-scale";
 
-import { getReferencePathData } from './utils';
+import { getScaledPathData } from './utils';
 import "./styles.scss";
 
 const withoutLetters = str => str.replace(/[^0-9-., ]/g, "");
@@ -64,7 +64,7 @@ const getPathData = (segment, i, allSegments) => {
 const SegmentedPath = ({ data, scaleX, scaleY }) => {
   const [pathCount, setPathCount] = useState(0);
   const [refPathData, setRefPathData] = useState(
-    getReferencePathData(data, scaleX, scaleY)
+    getScaledPathData(data, scaleX, scaleY)
   );
   const interactivePathRef = useRef(null);
   useEffect(() => {
