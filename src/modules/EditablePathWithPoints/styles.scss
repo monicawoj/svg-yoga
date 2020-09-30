@@ -34,25 +34,3 @@
 .dragging {
   fill: "green" !important;
 }
-
-.path-segment {
-  &:hover {
-    stroke: $mandarin;
-  }
-  &.is-selected {
-    stroke: $orange;
-  }
-}
-
-.board-item-content {
-   &:hover,
-   &.is-highlighted
-    {
-    background-color: $mandarin;
-    color: white;
-  }
-  &.is-selected {
-    background-color: $orange;
-    color: white;
-  }
-}

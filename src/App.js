@@ -1,10 +1,9 @@
-import React, { useRef, useEffect, useState } from "react";
-import EditablePathWithPoints from "modules/EditablePathWithPoints/EditablePathWithPoints";
+import React, { useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { SVGPathData, encodeSVGPath, SVGPathDataTransformer } from "svg-pathdata";
-import SegmentedPath from "modules/SegmentedPath/SegmentedPath";
+import DraggablePath from "modules/DraggablePath/DraggablePath";
 import PathCommandsList from 'modules/PathCommandsList/PathCommandsList';
 import DiffViewer from 'modules/DiffViewer/DiffViewer';
+import { getRoundedAbsolutePathData } from 'utils';
 
 import "./App.scss";
 
@@ -15,8 +14,10 @@ const examplePathData =
 
 const App = () => {
   const canvasRef = useRef(null);
-  const [inputPathData, setInputPathData] = useState(examplePathData);
-  const [pathData, setPathData] = useState(examplePathData);
+  const [inputPathData, setInputPathData] = useState(
+    getRoundedAbsolutePathData(examplePathData)
+  );
+  const [pathData, setPathData] = useState(getRoundedAbsolutePathData(examplePathData));
   const [scale, setScale] = useState(1);
   const [selectedCommand, setSelectedCommand] = useState(null);
   const [highlightedCommand, setHighlightedCommand] = useState(null);
@@ -24,11 +25,12 @@ const App = () => {
     isShowingEncodedPathCommands,
     setIsShowingEncodedPathCommands,
   ] = useState(true);
+  const [arePointsVisible, setArePointsVisible] = useState(false);
+  const [areControlPointsVisible, setAreControlPointsVisible] = useState(false);
 
   const highlightCommand = i => setHighlightedCommand(i);
   const unhighlightCommand = () => setHighlightedCommand(null);
-    const selectCommand = i => setSelectedCommand(i);
-    const deselectCommand = () => setSelectedCommand(null);
+  const selectCommand = i => setSelectedCommand(i);
   const updatePathData = newData => setPathData(newData);
   const getSliderValueFromScale = scale => {
     let sliderValue;
@@ -54,8 +56,19 @@ const App = () => {
   return (
     <>
       <section className="hero is-primary">
-        <div className="hero-body">
-          <h1 className="title">SVG Path Shaper</h1>
+        <div className="hero-body columns">
+          <h1 className="title level column">SVG Path Shaper</h1>
+          <div className="column">
+            <h3 className="subtitle">
+              1. EXPLORE the path by hovering over its segments
+            </h3>
+            <h3 className="subtitle">
+              2. TWEAK path commands directly in the command list
+            </h3>
+            <h3 className="subtitle">
+              3. WARP the path by clicking and dragging control points
+            </h3>
+          </div>
         </div>
       </section>
       <section className="section">
@@ -93,16 +106,12 @@ const App = () => {
               <div className="message-body box">
                 <textarea
                   className="textarea"
-                  value={new SVGPathData(pathData)
-                    .scale(1 / scale, 1 / scale)
-                    .encode()}
+                  value={getRoundedAbsolutePathData(pathData)}
                   readOnly
                 />
                 <CopyToClipboard
                   className="button is-link"
-                  text={new SVGPathData(pathData)
-                    .scale(1 / scale, 1 / scale)
-                    .encode()}
+                  text={getRoundedAbsolutePathData(pathData)}
                   // onCopy={() => setCopied(true)}
                 >
                   <span>Copy to clipboard</span>
@@ -118,9 +127,6 @@ const App = () => {
           <section className="section">
             <div className="columns">
               <div className="column is-half">
-                <div>
-                  <h2 className="title">Path commands</h2>
-                </div>
                 <div className="control subtitle">
                   <div>
                     <input
@@ -130,7 +136,7 @@ const App = () => {
                       onChange={handleCommandTypeToggle}
                       className="radio"
                     />{" "}
-                    Encoded
+                    Encoded path commands (original)
                   </div>
                   <div>
                     <input
@@ -140,15 +146,15 @@ const App = () => {
                       onChange={handleCommandTypeToggle}
                       className="radio"
                     />{" "}
-                    Parsed (human-friendlier)
+                    Parsed path commands (human-friendlier)
                   </div>
                 </div>
               </div>
               <div className="column flex-end">
-                <h3 className="subtitle">
-                  Modify the path by clicking on a path command and preview
-                  results below. If the path is not visible, try zooming in or out using the slider.
-                </h3>
+                <p className="heading">
+                  Note: if the path is not visible, try zooming in or out using
+                  the slider.
+                </p>
               </div>
             </div>
 
@@ -165,38 +171,56 @@ const App = () => {
                 />
               </div>
               <div className="column box" ref={canvasRef}>
-                <input
-                  className="slider is-fullwidth is-small is-circle"
-                  step="1"
-                  min="-100"
-                  max="100"
-                  value={getSliderValueFromScale(scale)}
-                  type="range"
-                  onChange={handleSliderChange}
-                />
-                <SegmentedPath
+                <div>
+                  <input
+                    className="slider is-fullwidth is-small is-circle"
+                    step="1"
+                    min="-100"
+                    max="100"
+                    value={getSliderValueFromScale(scale)}
+                    type="range"
+                    onChange={handleSliderChange}
+                  />
+                  <div className="buttons has-addons">
+                    <button
+                      className={`button ${
+                        arePointsVisible ? "is-selected" : ""
+                      }`}
+                      onClick={() => setArePointsVisible(!arePointsVisible)}
+                    >
+                      Points
+                    </button>
+                    <button
+                      className={`button ${
+                        areControlPointsVisible ? "is-selected" : ""
+                      }`}
+                      onClick={() =>
+                        setAreControlPointsVisible(!areControlPointsVisible)
+                      }
+                    >
+                      Control points
+                    </button>
+                  </div>
+                </div>
+                <DraggablePath
                   data={pathData}
                   selectedCommand={selectedCommand}
                   highlightedCommand={highlightedCommand}
                   onMouseOver={highlightCommand}
                   onMouseOut={unhighlightCommand}
+                  onDragEnd={setPathData}
                   onClick={selectCommand}
                   scale={scale}
+                  arePointsVisible={arePointsVisible}
+                  areControlPointsVisible={areControlPointsVisible}
                 />
-                {/* <EditablePathWithPoints dimensions={dimensions} data={pathData} /> */}
               </div>
             </div>
           </section>
           <section className="section">
             <DiffViewer
-              oldValue={new SVGPathData(inputPathData)
-                .toAbs()
-                .transform(SVGPathDataTransformer.ROUND(4))
-                .encode()}
-              newValue={new SVGPathData(pathData)
-                .toAbs()
-                .transform(SVGPathDataTransformer.ROUND(4))
-                .encode()}
+              oldValue={getRoundedAbsolutePathData(inputPathData)}
+              newValue={getRoundedAbsolutePathData(pathData)}
             />
           </section>
         </>
@@ -214,5 +238,3 @@ const App = () => {
 }
 
 export default App;
-
-// https://codesandbox.io/s/mystifying-wozniak-g0wbm

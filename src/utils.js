@@ -1,6 +1,6 @@
 import { SVGPathData, encodeSVGPath, SVGPathDataTransformer } from "svg-pathdata";
 
-export const getScaledPathData = (d, scale = 1) => new SVGPathData(d)
+export const getScaledPathData = (d, scale) => new SVGPathData(d)
     .toAbs()
     .scale(scale, scale)
     .encode();
@@ -67,6 +67,51 @@ export const getEncodedPathCommands = (pathData) =>
     .toAbs()
     .transform(SVGPathDataTransformer.ROUND(4))
     .commands.map((command) => encodeSVGPath(command));
+
+  const L_TO_C = () => {
+    return SVGPathDataTransformer.INFO((command, prevX, prevY) => {
+      if (command.type & SVGPathData.LINE_TO) {
+        command.type = SVGPathData.CURVE_TO;
+        command.x1 = (Number(command.x) + Number(prevX)) / 2;
+        command.y1 = (command.y + prevY) / 2;
+        command.x2 = (command.x + prevX) / 2;
+        command.y2 = (command.y + prevY) / 2;
+      }
+      return command;
+    });
+  };
+
+export const WITH_PREV_POINT = () => {
+  return SVGPathDataTransformer.INFO((command, prevX, prevY) => {
+    command.prevX = prevX;
+    command.prevY = prevY;
+    return command;
+  });
+};
+
+export const getPathCommandsWithPreviousPoint = pathData => new SVGPathData(pathData).transform(WITH_PREV_POINT()).commands;
+
+export const getPathCommandsAsCubicCurves = (pathData) => {
+  // NORMALIZE_HVZ() = Convert H, V, Z and A with rX = 0 to L
+  // L_TO_C() - create my own transform function that converts L to C where C1 = C2 = midpoint of L points
+  // NORMALIZE_ST() - Transforms smooth curves and quads to normal curves and quads (SsTt to CcQq)
+  // A_TO_C() - Convert arc commands to curve commands
+  // QT_TO_C() - A quadratic bézier curve can be represented by a cubic bézier curve which has the same end points as the quadratic and both control points in place of the quadratic"s one.
+  // This transformer replaces QqTt commands with Cc commands respectively
+  return new SVGPathData(pathData)
+    .toAbs()
+    .transform(SVGPathDataTransformer.NORMALIZE_HVZ())
+    .transform(L_TO_C())
+    .transform(SVGPathDataTransformer.NORMALIZE_ST())
+    .transform(SVGPathDataTransformer.A_TO_C())
+    .transform(SVGPathDataTransformer.QT_TO_C())
+    .encode();
+};
+
+export const getRoundedAbsolutePathData = pathData => new SVGPathData(pathData)
+  .toAbs()
+  .transform(SVGPathDataTransformer.ROUND(4))
+  .encode();
 
 export const getFromBetween = {
     results: [],

@@ -19,33 +19,15 @@ import "./styles.scss";
 // as the user drags, need to update the path command that created this point with the new X and Y values
 // whenever the data updates, need to rerender (hold data in state)
 
+
+
+// we have a path segment
+
 const EditablePathWithPoints = ({ data, dimensions }) => {
   const [pathData, setPathData] = useState(data);
-  const [pathBoundingBox, setPathBoundingBox] = useState({});
   const [viewBox, setViewBox] = useState(`0 0 100 100`);
   const [arePointsVisible, setPointsVisibility] = useState(false);
   const pathRef = useRef(null);
-
-  useEffect(() => {
-    if (pathBoundingBox.x) {
-//  setPathData(
-//    new SVGPathData(pathData)
-//      .toAbs()
-//      .translate(-pathBoundingBox.x, -pathBoundingBox.y)
-//      .encode()
-//  );
-    }
-  }, [pathBoundingBox.x, pathBoundingBox.y, pathData]);
-
-  useEffect(() => {
-    if (pathRef.current) {
-      const pathBoundingBox = pathRef.current.getBBox();
-      setPathBoundingBox(pathBoundingBox);
-      // setViewBox(`${x} ${y} ${width} ${height}`);
-      // console.log(dimensions.width, dimensions.height, pathRef.current.getBBox());
-      // const newScales = { x: boundingBox.width / , y };
-    }
-  }, [dimensions, pathRef])
 
   const getPoints = pathData => {
     const pathCommands = new SVGPathData(pathData).toAbs().commands;
