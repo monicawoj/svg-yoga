@@ -57,7 +57,7 @@ const App = () => {
     <>
       <section className="hero is-primary">
         <div className="hero-body columns">
-          <h1 className="title level column">SVG Path Shaper</h1>
+          <h1 className="title level column">SVG Yoga</h1>
           <div className="column">
             <h3 className="subtitle">
               1. EXPLORE the path by hovering over its segments
