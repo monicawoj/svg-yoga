@@ -10,7 +10,7 @@
 }
 
 .board-item-content {
-   &:hover {
+   &:hover, &.is-highlighted {
     background-color: $mandarin;
     color: white;
   }
