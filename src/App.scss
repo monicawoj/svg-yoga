@@ -108,4 +108,10 @@ footer {
   }
 }
 
+.yoga-image {
+  width: 200px;
+  height: 200px;
+  background-image: url('/images/yoga.svg');
+}
+
 @import "../node_modules/bulma/bulma.sass";

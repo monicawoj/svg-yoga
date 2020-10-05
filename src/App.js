@@ -4,6 +4,7 @@ import DraggablePath from "modules/DraggablePath/DraggablePath";
 import PathCommandsList from 'modules/PathCommandsList/PathCommandsList';
 import DiffViewer from 'modules/DiffViewer/DiffViewer';
 import { getRoundedAbsolutePathData } from 'utils';
+import { ReactComponent as Yoga } from "images/yoga.svg";
 
 import "./App.scss";
 
@@ -57,7 +58,12 @@ const App = () => {
     <>
       <section className="hero is-primary">
         <div className="hero-body columns">
-          <h1 className="title level column">SVG Path Yoga</h1>
+          <div className="column">
+            <div className="columns">
+              <h1 className="title level">SVG Path Yoga</h1>
+              <Yoga width={100} height={50} fill="#fff" />
+            </div>
+          </div>
           <div className="column">
             <h3 className="subtitle">
               1. EXPLORE the path by hovering over its segments
