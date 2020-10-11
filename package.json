@@ -25,6 +25,7 @@
     "react-easy-edit": "^1.11.0",
     "react-scripts": "3.3.0",
     "react-simple-code-editor": "^0.10.0",
+    "scroll-into-view-if-needed": "^2.2.26",
     "svg-pathdata": "^5.0.2"
   },
   "scripts": {

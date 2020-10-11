@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { encodeSVGPath } from "svg-pathdata";
 import EasyEdit, { Types } from "react-easy-edit";
 import { getPathCommands, getEncodedPathCommands, getPathCommandType } from 'utils';
+import scrollIntoView from 'scroll-into-view-if-needed';
 
 import './styles.scss';
 import "App.scss";
@@ -20,10 +21,11 @@ const PathCommandsList = ({ pathData, selectedCommand, highlightedCommand, onMou
         highlightedCommand &&
         refs[highlightedCommand].current
       ) {
-        refs[highlightedCommand].current.scrollIntoViewIfNeeded({
+        scrollIntoView(refs[highlightedCommand].current, {
+          scrollMode: "if-needed",
           behavior: "smooth",
-            block: "start",
-            inline: "nearest"
+          block: "start",
+          inline: "nearest",
         });
       }
       
