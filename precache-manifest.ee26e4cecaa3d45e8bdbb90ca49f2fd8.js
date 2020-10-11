@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "d506bbd94bccefe54a24c6fa104d3873",
+    "revision": "52e291742635b776cf05dba3d44088e1",
     "url": "/svg-yoga/index.html"
   },
   {
-    "revision": "629a1ec9ba5ecf6d5f31",
+    "revision": "35b53c14eced84e83e01",
     "url": "/svg-yoga/static/css/main.78879fee.chunk.css"
   },
   {
-    "revision": "2b6741a40870310263a5",
-    "url": "/svg-yoga/static/js/2.33cc73cb.chunk.js"
+    "revision": "ca2aff0d042530b93ecd",
+    "url": "/svg-yoga/static/js/2.9c3a59f3.chunk.js"
   },
   {
     "revision": "73dd3e3697a716729b64fe904848b202",
-    "url": "/svg-yoga/static/js/2.33cc73cb.chunk.js.LICENSE"
+    "url": "/svg-yoga/static/js/2.9c3a59f3.chunk.js.LICENSE"
   },
   {
-    "revision": "629a1ec9ba5ecf6d5f31",
-    "url": "/svg-yoga/static/js/main.35940186.chunk.js"
+    "revision": "35b53c14eced84e83e01",
+    "url": "/svg-yoga/static/js/main.d28909df.chunk.js"
   },
   {
     "revision": "9f0cd1cbe58ae5a3652b",
